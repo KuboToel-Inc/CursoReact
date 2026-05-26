@@ -1,0 +1,47 @@
+name: Validate project
+
+on:
+  workflow_dispatch:
+    project:
+      description: "Nombre del proyecto a validar"
+      required: true
+      default: 00-home
+
+jobs:
+  validation:
+    runs-on: ubuntu-latest
+    outputs:
+      is-react: ${{ steps.check-project.outputs.is-react }}
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Validar existencia del proyecto
+        run: |
+          if [ ! -d "${{ github.workspace }}/${{ github.event.inputs.project }}" ]; then
+            echo "El proyecto ${{ github.event.inputs.project }} no existe"
+            exit 1
+          fi
+
+      - name: Validar que es React
+        id: check-project
+        run: |
+          # Inicializar todas las banderas en false
+          echo "is-react=false" >> $GITHUB_OUTPUT
+          echo "is-angular=false" >> $GITHUB_OUTPUT
+          echo "is-vue=false" >> $GITHUB_OUTPUT
+
+          PKG=${{ github.workspace }}/${{ github.event.inputs.project }}/package.json
+          if grep -q '"react"' $PKG && grep -q '"build"' $PKG; then
+            echo "Proyecto válido como React"
+            echo "is-react=true" >> $GITHUB_OUTPUT
+          else
+            echo "El proyecto no parece ser React"
+          fi
+
+  call-validation:
+    needs: validation
+    if: needs.validation.outputs.is-react == 'true'
+    uses: org-name/shared-workflows/.github/workflows/validate_react_project.yml@main
+    with:
+      project: ${{ github.event.inputs.project }}
