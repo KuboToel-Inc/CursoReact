@@ -32,8 +32,7 @@ jobs:
           echo "is-angular=false" >> $GITHUB_OUTPUT
           echo "is-vue=false" >> $GITHUB_OUTPUT
 
-          PKG=${{ github.workspace }}/${{ inputs.project }}/package.json
-          if grep -q '"react"' $PKG && grep -q '"build"' $PKG; then
+          if [[ $(cat "$FILE") == *"react"* && $(cat "$FILE") == *"build"* ]]; then
             echo "Proyecto válido como React"
             echo "is-react=true" >> $GITHUB_OUTPUT
           else
