@@ -53,5 +53,7 @@ jobs:
   call-deploy:
     needs: call-validation
     uses: KuboToel-Inc/shared-workflows/.github/workflows/deploy_react_project.yml@main
+    secrets:
+      PERSONAL_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
     with:
       project: ${{ github.event.inputs.project }}
