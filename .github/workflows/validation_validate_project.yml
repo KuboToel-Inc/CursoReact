@@ -32,7 +32,7 @@ jobs:
           echo "is-angular=false" >> $GITHUB_OUTPUT
           echo "is-vue=false" >> $
 
-          FILE=${{ github.workspace }}/${{ inputs.project }}/packages.json
+          FILE=${{ github.workspace }}/${{ inputs.project }}/package.json
           echo "📄 Contenido del archivo:"
           cat "$FILE"
 
