@@ -1,4 +1,4 @@
-name: Validate project
+name: Deploy Project
 
 on:
   workflow_dispatch:
@@ -47,5 +47,11 @@ jobs:
     needs: validation
     if: needs.validation.outputs.is-react == 'true'
     uses: KuboToel-Inc/shared-workflows/.github/workflows/validate_react_project.yml@main
+    with:
+      project: ${{ github.event.inputs.project }}
+
+  call-deploy:
+    needs: call-validation
+    uses: KuboToel-Inc/shared-workflows/.github/workflows/deploy_react_project.yml@main
     with:
       project: ${{ github.event.inputs.project }}
