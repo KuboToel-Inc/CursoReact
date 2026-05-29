@@ -30,7 +30,11 @@ jobs:
           # Inicializar todas las banderas en false
           echo "is-react=false" >> $GITHUB_OUTPUT
           echo "is-angular=false" >> $GITHUB_OUTPUT
-          echo "is-vue=false" >> $GITHUB_OUTPUT
+          echo "is-vue=false" >> $
+
+          FILE=${{ github.workspace }}/${{ inputs.project }}/packages.json
+          echo "📄 Contenido del archivo:"
+          cat "$FILE"
 
           if [[ $(cat "$FILE") == *"react"* && $(cat "$FILE") == *"build"* ]]; then
             echo "Proyecto válido como React"
