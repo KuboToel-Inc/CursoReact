@@ -42,6 +42,6 @@ jobs:
   call-validation:
     needs: validation
     if: needs.validation.outputs.is-react == 'true'
-    uses: KuboToel-Inc/shared-workflows/.github/workflows/frontend  /validate_react_project.yml@main
+    uses: KuboToel-Inc/shared-workflows/.github/workflows/frontend/validate_react_project.yml@main
     with:
       project: ${{ github.event.inputs.project }}
