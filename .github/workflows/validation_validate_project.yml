@@ -2,10 +2,11 @@ name: Validate project
 
 on:
   workflow_dispatch:
-    project:
-      description: "Nombre del proyecto a validar"
-      required: true
-      default: 00-home
+    inputs:
+      project:
+        description: "Nombre del proyecto a validar"
+        required: true
+        default: 00-home
 
 jobs:
   validation:
@@ -18,8 +19,8 @@ jobs:
 
       - name: Validar existencia del proyecto
         run: |
-          if [ ! -d "${{ github.workspace }}/${{ github.event.inputs.project }}" ]; then
-            echo "El proyecto ${{ github.event.inputs.project }} no existe"
+          if [ ! -d "${{ github.workspace }}/${{ inputs.project }}" ]; then
+            echo "El proyecto ${{ inputs.project }} no existe"
             exit 1
           fi
 
@@ -31,7 +32,7 @@ jobs:
           echo "is-angular=false" >> $GITHUB_OUTPUT
           echo "is-vue=false" >> $GITHUB_OUTPUT
 
-          PKG=${{ github.workspace }}/${{ github.event.inputs.project }}/package.json
+          PKG=${{ github.workspace }}/${{ inputs.project }}/package.json
           if grep -q '"react"' $PKG && grep -q '"build"' $PKG; then
             echo "Proyecto válido como React"
             echo "is-react=true" >> $GITHUB_OUTPUT
